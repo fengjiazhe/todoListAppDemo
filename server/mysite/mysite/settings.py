@@ -30,6 +30,16 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
+# 允许所有域名跨域（开发阶段用，生产环境需配置具体域名）
+CORS_ALLOW_ALL_ORIGINS = True
+
+# 配置 DRF
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny',
+    ]
+}
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -37,6 +47,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'blog.apps.BlogConfig', 
 ]
 
 MIDDLEWARE = [
