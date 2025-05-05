@@ -74,8 +74,12 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'FBlog',    # 数据库名
+        'USER': 'root',     # 用户名
+        'PASSWORD': '123456',   # 密码
+        'HOST': 'localhost',    # 数据库地址，本地为 localhost
+        'PORT': '3306',     # 数据库端口，默认 3306
     }
 }
 
