@@ -4,7 +4,7 @@
 </template>
 
 
-<script setup lang="ts">
+<script setup>
 name:'Login';
 
 </script>
