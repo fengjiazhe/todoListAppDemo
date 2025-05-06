@@ -1,13 +1,13 @@
 <template>
-  <div>
-    这是登录页
-  </div>
+    <div>
+        这是主页
+    </div>
 
 </template>
 
 
 <script setup>
-name:'Login';
+name:'Home';
 
 </script>
 

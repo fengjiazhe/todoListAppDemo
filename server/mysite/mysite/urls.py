@@ -17,11 +17,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from blog.views import home  # 根据实际路径调整
-
-
-from blog.views import PostViewSet
+from blog.views import home,PostViewSet  # 根据实际路径调整
 from rest_framework.routers import DefaultRouter
+from blog import views
 
 router = DefaultRouter()
 router.register(r'posts', PostViewSet)
@@ -30,4 +28,5 @@ urlpatterns = [
     path('', home),  # 添加这行，处理根路径
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
+    path('api/login/', views.login, name='login'),
 ]

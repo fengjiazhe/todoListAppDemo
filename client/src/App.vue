@@ -9,17 +9,16 @@
         </div>
         <div class="whole-nav">
           <div class="nav-bar">
-            <div>首页</div>
-            <div>墨海</div>
-            <div>寻文</div>
-            <div>执笔</div>
-            <div>妙趣</div>
+            <div @click="toHome">首页</div>
+            <div @click="toArticle">墨海</div>
+            <div @click="toWrite">执笔</div>
+            <div @click="toOther">妙趣</div>
           </div>
-          <el-icon class="user-center"><User /></el-icon>
+          <el-icon class="user-center" @click="toUser"><User /></el-icon>
         </div>
       </el-header>
       <el-main class="whole-main">
-        <div>主要内容</div>
+        <router-view></router-view>
       </el-main>
       <el-footer class="whole-footer">
         <div>站长：吉吉 --- 联系邮箱1006501951@qq.com | 字体：LXGWWenKaiMonoScreen --- 来源：中文网字计划</div>
@@ -29,6 +28,33 @@
 </template>
 
 <script setup>
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+const router = useRouter();
+
+const hasLogined = ref(false);
+
+function toHome() {
+  console.log('点击首页按钮');
+  router.push({ path: '/' });
+}
+function toArticle() {
+  console.log('点击墨海按钮');
+  router.push({ path: '/article' });
+}
+function toWrite() {
+  console.log('点击写作按钮');
+  router.push({ path: '/write' });
+}
+function toOther() {
+  console.log('点击其他按钮');
+  router.push({ path: '/other' });
+}
+function toUser() {
+  console.log('点击其他按钮');
+  router.push({ path: '/user' });
+}
+
 </script>
 
 <style>
@@ -89,6 +115,7 @@
 
 .whole-nav .nav-bar div:hover{
   cursor: pointer;
+  color:#bf967f;
   transform: scale(1.2); /* 放大效果 */
 }
 
@@ -105,9 +132,7 @@
 .whole-main{
   margin-top: 1rem;
   min-height: 80%;
-  height: 2500px;
   width: 80%;
-  background-color: rgba(74, 202, 42, 0.507);
 }
 
 .whole-footer{

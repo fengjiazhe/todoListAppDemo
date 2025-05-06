@@ -1,13 +1,13 @@
 <template>
-  <div>
-    这是登录页
-  </div>
+    <div>
+        注册页
+    </div>
 
 </template>
 
 
 <script setup>
-name:'Login';
+name:'register';
 
 </script>
 

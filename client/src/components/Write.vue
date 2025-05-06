@@ -1,13 +1,13 @@
 <template>
-  <div>
-    这是登录页
-  </div>
+    <div>
+        这是写作页
+    </div>
 
 </template>
 
 
 <script setup>
-name:'Login';
+name:'Write';
 
 </script>
 

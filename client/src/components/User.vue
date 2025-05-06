@@ -1,11 +1,13 @@
 <template>
-    <div>这是页面一</div>
+    <div>
+        个人主页
+    </div>
 
 </template>
 
 
 <script setup>
-name:'Page1';
+name:'User';
 
 </script>
 
