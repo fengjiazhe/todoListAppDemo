@@ -14,7 +14,13 @@
             <div @click="toWrite">执笔</div>
             <div @click="toOther">妙趣</div>
           </div>
-          <el-icon class="user-center" @click="toUser"><User /></el-icon>
+          <el-icon class="user-center" @click="toUser" @mouseenter="delayOpen" @mouseleave="delayClose">
+            <User />
+          </el-icon>
+          <!-- 弹窗元素 -->
+          <div class="user-popup" v-if="popupVisible" @mouseenter="delayOpen" @mouseleave="delayClose">
+            这是悬浮弹窗的内容
+          </div>
         </div>
       </el-header>
       <el-main class="whole-main">
@@ -33,6 +39,26 @@ import { useRouter } from 'vue-router';
 const router = useRouter();
 
 const hasLogined = ref(false);
+
+// 定义延迟打开和关闭函数
+const popupVisible = ref(false);
+const closeTimeout = ref(null);
+function delayOpen() {
+  clearCloseTimeout();
+  popupVisible.value = true;
+}
+function delayClose() {
+  closeTimeout.value = setTimeout(() => {
+    popupVisible.value = false;
+  }, 200);
+}
+// 清除弹窗延时关闭
+function clearCloseTimeout() {
+  if (closeTimeout.value) {
+    clearTimeout(closeTimeout.value);
+    closeTimeout.value = null;
+  }
+}
 
 function toHome() {
   console.log('点击首页按钮');
@@ -65,7 +91,7 @@ function toUser() {
   align-items: center;
 }
 
-.whole-header{
+.whole-header {
   font-family: 'LXGW WenKai Mono Screen';
   width: 100%;
   position: sticky;
@@ -74,68 +100,94 @@ function toUser() {
   justify-content: space-between;
   /* background-image: radial-gradient(transparent 1px, #fff 1px);
   background-size: 4px 4px; */
-  backdrop-filter: saturate(50%) blur(10px); /* 模糊效果 */
+  backdrop-filter: saturate(50%) blur(10px);
+  /* 模糊效果 */
   box-shadow: 0px 2px 7px rgba(175, 175, 175, 0.7);
-  
+
 }
 
-.logo{
+.logo {
   margin: 10px 5%;
-  transition: transform 0.1s ease; /* 平滑过渡 */
+  transition: transform 0.1s ease;
+  /* 平滑过渡 */
+  user-select: none;
+  /* 禁止用户选择文本 */
+  pointer-events: auto;
+  /* 允许点击 */
 }
 
-.logo:hover{
+.logo:hover {
   cursor: pointer;
-  transform: scale(1.2); /* 放大效果 */
+  transform: scale(1.2);
+  /* 放大效果 */
 }
 
-.logo img{
+.logo img {
   width: 50px;
   height: 50px;
   margin-left: 10px;
 }
 
-.whole-nav{
+.whole-nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-right: 5%;
+  position: relative;
 }
 
-.whole-nav .nav-bar{ 
+.whole-nav .nav-bar {
   font-size: 24px;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   grid-gap: 50px;
   margin-right: 50px;
-  transition: transform 0.2s ease; /* 平滑过渡 */
-  user-select: none;  /* 禁止用户选择文本 */
-  pointer-events: auto; /* 允许点击 */
+  transition: transform 0.2s ease;
+  /* 平滑过渡 */
+  user-select: none;
+  /* 禁止用户选择文本 */
+  pointer-events: auto;
+  /* 允许点击 */
 }
 
-.whole-nav .nav-bar div:hover{
+.whole-nav .nav-bar div:hover {
   cursor: pointer;
-  color:#bf967f;
-  transform: scale(1.2); /* 放大效果 */
+  color: #bf967f;
+  transform: scale(1.2);
+  /* 放大效果 */
 }
 
-.whole-nav .user-center{
+.whole-nav .user-center {
   font-size: 24px;
   cursor: pointer;
   transition: transform 0.1s ease;
 }
 
-.whole-nav .user-center:hover{
+.whole-nav .user-center:hover {
   transform: scale(1.2);
 }
 
-.whole-main{
+.user-popup {
+  position: absolute;
+  top: 100%;
+  right: -14%;
+  width: 200px;
+  height: 100px;
+  z-index: 1000;
+  /* border: 1px solid #ccc; */
+  padding: 10px;
+  border-radius: 5px;
+  background: linear-gradient(145deg, #a99d9d, #c9baba);
+  box-shadow: 0px 0px 0px 5px rgb(202, 187, 187)
+}
+
+.whole-main {
   margin-top: 1rem;
   min-height: 80%;
   width: 80%;
 }
 
-.whole-footer{
+.whole-footer {
   font-size: 14px;
   width: 100%;
   margin: 0;
