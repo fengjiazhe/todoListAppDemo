@@ -18,8 +18,21 @@
             <User />
           </el-icon>
           <!-- 弹窗元素 -->
-          <div class="user-popup" v-if="popupVisible" @mouseenter="delayOpen" @mouseleave="delayClose">
-            这是悬浮弹窗的内容
+          <div class="user-popup" v-show="popupVisible" @mouseenter="delayOpen" @mouseleave="delayClose">
+            <div v-if="hasLogined">
+              <div>已登录</div>
+              <div>头像</div>
+              <div>个人中心</div>
+              <div>管理文章</div>
+              <el-button type="primary" @click="quitLogin">退出登录</el-button>
+            </div>
+            <div v-else>
+              <div>未登录</div>
+              <div>
+                <el-button type="primary" @click="toLogin">登录</el-button>
+                <div>还没有账号？点击<a href="#" @click="toRegister">注册</a></div>
+              </div>
+            </div>
           </div>
         </div>
       </el-header>
@@ -34,15 +47,20 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
-const router = useRouter();
+import { useUserStore } from '@/store/userStore';
 
-const hasLogined = ref(false);
+const router = useRouter();
+const userStore = useUserStore(); // 使用 Pinia 的 userStore
 
 // 定义延迟打开和关闭函数
 const popupVisible = ref(false);
 const closeTimeout = ref(null);
+
+// computed 自动追踪 userStore.hasLogined
+const hasLogined = computed(() => userStore.hasLogined);
+
 function delayOpen() {
   clearCloseTimeout();
   popupVisible.value = true;
@@ -58,6 +76,11 @@ function clearCloseTimeout() {
     clearTimeout(closeTimeout.value);
     closeTimeout.value = null;
   }
+}
+
+function toLogin() {
+  console.log('点击登录按钮');
+  router.push({ path: '/login' });
 }
 
 function toHome() {
@@ -77,8 +100,18 @@ function toOther() {
   router.push({ path: '/other' });
 }
 function toUser() {
-  console.log('点击其他按钮');
+  console.log('点击用户按钮');
   router.push({ path: '/user' });
+}
+function toRegister() {
+  console.log('点击注册按钮');
+  router.push({ path: '/register' });
+}
+
+function quitLogin() {
+  console.log('点击退出登录按钮');
+  userStore.clearUser(); // 调用 Pinia 的 clearUser 方法
+  router.push({ path: '/' }); // 跳转到首页
 }
 
 </script>
@@ -132,7 +165,7 @@ function toUser() {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-right: 5%;
+  margin-right: 10%;
   position: relative;
 }
 
@@ -170,15 +203,15 @@ function toUser() {
 .user-popup {
   position: absolute;
   top: 100%;
-  right: -14%;
-  width: 200px;
-  height: 100px;
-  z-index: 1000;
-  /* border: 1px solid #ccc; */
-  padding: 10px;
-  border-radius: 5px;
-  background: linear-gradient(145deg, #a99d9d, #c9baba);
-  box-shadow: 0px 0px 0px 5px rgb(202, 187, 187)
+  right: -10%;
+  width: 150px;
+  height: 300px;
+  background: rgba( 252, 243, 232, 0.65 );
+  box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+  backdrop-filter: blur( 9px );
+  -webkit-backdrop-filter: blur( 9px );
+  border-radius: 10px;
+  border: 1px solid rgba( 255, 255, 255, 0.18 );
 }
 
 .whole-main {
