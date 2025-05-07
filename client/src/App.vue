@@ -19,18 +19,27 @@
           </el-icon>
           <!-- 弹窗元素 -->
           <div class="user-popup" v-show="popupVisible" @mouseenter="delayOpen" @mouseleave="delayClose">
-            <div v-if="hasLogined">
-              <div>已登录</div>
+            <div class="login-reday" v-if="hasLogined">
               <div>头像</div>
-              <div>个人中心</div>
-              <div>管理文章</div>
-              <el-button type="primary" @click="quitLogin">退出登录</el-button>
-            </div>
-            <div v-else>
-              <div>未登录</div>
+              <div class="user-name">{{ userName }}</div>
+              <div class="user-email">{{ userEmail }}</div>
               <div>
-                <el-button type="primary" @click="toLogin">登录</el-button>
-                <div>还没有账号？点击<a href="#" @click="toRegister">注册</a></div>
+                <el-button type="warning" @click="toUserCenter">个人中心</el-button>
+              </div>
+              <div>
+                <el-button type="warning" @click="toArticleManager">管理文章</el-button>
+              </div>
+              <div>
+                <el-button type="warning" @click="quitLogin">退出登录</el-button>
+              </div>
+            </div>
+            <div class="no-login" v-else>
+              <div class="title">未登录</div>
+              <div>
+                <el-button class="popup-button" type="warning" @click="toLogin">去登录</el-button>
+              </div>
+              <div>
+                <el-button class="popup-button" type="warning" @click="toRegister">去注册</el-button>
               </div>
             </div>
           </div>
@@ -50,9 +59,11 @@
 import { computed, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useUserStore } from '@/store/userStore';
+import { useMessage } from './hooks/useMessage';
 
 const router = useRouter();
 const userStore = useUserStore(); // 使用 Pinia 的 userStore
+const message = useMessage(); // 使用自定义的消息提示函数
 
 // 定义延迟打开和关闭函数
 const popupVisible = ref(false);
@@ -61,6 +72,17 @@ const closeTimeout = ref(null);
 // computed 自动追踪 userStore.hasLogined
 const hasLogined = computed(() => userStore.hasLogined);
 
+const userName = computed(() => userStore.userName);
+const userEmail = computed(() => userStore.userEmail);
+
+
+
+function toUserCenter() {
+  message.info('个人中心开发中...');
+}
+function toArticleManager() {
+  message.info('文章管理开发中...');
+}
 function delayOpen() {
   clearCloseTimeout();
   popupVisible.value = true;
@@ -68,7 +90,7 @@ function delayOpen() {
 function delayClose() {
   closeTimeout.value = setTimeout(() => {
     popupVisible.value = false;
-  }, 200);
+  }, 100);
 }
 // 清除弹窗延时关闭
 function clearCloseTimeout() {
@@ -108,8 +130,9 @@ function toRegister() {
   router.push({ path: '/register' });
 }
 
+// 退出登录函数
 function quitLogin() {
-  console.log('点击退出登录按钮');
+  message.success('您已退出登录');
   userStore.clearUser(); // 调用 Pinia 的 clearUser 方法
   router.push({ path: '/' }); // 跳转到首页
 }
@@ -201,17 +224,33 @@ function quitLogin() {
 }
 
 .user-popup {
+  padding: 1rem 0.5rem;
   position: absolute;
   top: 100%;
-  right: -10%;
-  width: 150px;
-  height: 300px;
+  right: -14%;
   background: rgba( 252, 243, 232, 0.65 );
   box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
   backdrop-filter: blur( 9px );
   -webkit-backdrop-filter: blur( 9px );
   border-radius: 10px;
   border: 1px solid rgba( 255, 255, 255, 0.18 );
+}
+
+.user-popup .login-reday {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.no-login {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 150px;
 }
 
 .whole-main {
@@ -228,5 +267,6 @@ function quitLogin() {
   display: flex;
   justify-content: center;
   align-items: center;
+  user-select: none;
 }
 </style>
