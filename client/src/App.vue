@@ -148,7 +148,6 @@ function quitLogin() {
 }
 
 .whole-header {
-  font-family: 'LXGW WenKai Mono Screen';
   width: 100%;
   position: sticky;
   top: 0;
