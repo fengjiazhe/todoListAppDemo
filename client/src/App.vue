@@ -59,7 +59,7 @@
 import { computed, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useUserStore } from '@/store/userStore';
-import { useMessage } from './hooks/useMessage';
+import { useMessage } from '@/hooks/useMessage';
 
 const router = useRouter();
 const userStore = useUserStore(); // 使用 Pinia 的 userStore

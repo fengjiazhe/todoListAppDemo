@@ -13,8 +13,11 @@ import messagePlugin from './assets/plugins/message';  // 引入自定义消息�
 import * as ElIconsVue from '@element-plus/icons-vue'
 import { useUserStore } from './store/userStore'
 
+import { useMessage } from '@/hooks/useMessage';
+
 const app = createApp(App)
 const pinia = createPinia()
+const message = useMessage();
 
 
 // 全局注册图标组件
@@ -28,10 +31,13 @@ app.use(pinia)
 app.use(router)
 app.mount('#app')
 
+// const message = useMessage()
+
 router.beforeEach((to, from, next) => {
     const userStore = useUserStore();
     if (to.meta.requiresAuth && !userStore.hasLogined) {
         console.log('未登录，请先登录再访问！');
+        message.error('未登录，请先登录再访问！')
     } else {
         next();
     }
